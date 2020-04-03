@@ -103,10 +103,20 @@ extension ViewController: MBBlinkIdOverlayViewControllerDelegate {
     func isDataMatching(_ result: MBBlinkIdCombinedRecognizerResult) -> Bool {
 
         // PIN contains dashes, so we need to remove them before comparing it with the data from the back
-        let cleanedPIN = result.personalIdNumber?.replacingOccurrences(of: "-", with: "")
+        let cleanedPin = result.personalIdNumber?.replacingOccurrences(of: "-", with: "")
 
-        // to check whether the data matches, we just compare Personal ID number with OPT1 in the MRZ
-        return cleanedPIN == result.mrzResult.opt1
+        // Personal ID number needs to be equal to OPT1 in the MRZ
+        if (cleanedPin != result.mrzResult.opt1) {
+            return false
+        }
+
+        // Also, secondary ID from the back needs to be present in the full name
+        if (!(result.fullName?.uppercased().contains(result.mrzResult.secondaryID) ?? false)) {
+            return false
+        }
+
+        // data is matching if all previous conditions are true
+        return true
     }
 
     func isDataValid(_ result: MBBlinkIdCombinedRecognizerResult) -> Bool {
