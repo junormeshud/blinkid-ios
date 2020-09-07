@@ -25,4 +25,13 @@
 
 typedef void(^MBBlock)(void);
 
+#define MBASSERTE(condition, description)     \
+     do {                                                           \
+       NSAssert(condition, description);                            \
+       if (!(condition)) {                                          \
+         NSString *message = [NSString stringWithFormat:@"Assertion failed: (%s), %@, %s, file %s, line %d", #condition, description, __PRETTY_FUNCTION__, __FILE__, __LINE__]; \
+         LOGE("%s", [message UTF8String]);                          \
+       }                                                            \
+     } while (0)
+
 #endif /* MBMicroblinkDefines_h */
