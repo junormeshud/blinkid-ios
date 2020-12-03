@@ -23,6 +23,7 @@ class ViewController: UIViewController {
 
         /** Create BlinkID recognizer */
         self.blinkIdRecognizer = MBBlinkIdCombinedRecognizer()
+        self.blinkIdRecognizer?.anonymizationMode = MBAnonymizationMode.none
         self.blinkIdRecognizer?.returnFullDocumentImage = true
 
         /** Create settings */
